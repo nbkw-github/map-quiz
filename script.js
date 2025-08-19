@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
             feedbackOverlay.className = 'correct';
             playSound('correct');
         }
-        setTimeout(() => feedbackOverlay.classList.add('hidden'), 1200);
+        setTimeout(() => feedbackOverlay.classList.add('hidden'), 800);
     }
 
     function showFinalResult() {
