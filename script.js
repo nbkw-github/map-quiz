@@ -5,10 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPrefecture = null;
     let score = 0;
     let gameActive = false;
+    let isMuted = false;
 
     // --- DOM Element Variables ---
-    let mapContainer, questionEl, resultEl, scoreEl, feedbackOverlay,
-        feedbackSymbol, feedbackText, questionMascot;
+    let mapContainer, questionEl, resultEl, scoreEl, feedbackOverlay, 
+        feedbackSymbol, feedbackText, questionMascot, muteButton;
 
     const PREFECTURE_DATA = [
         { code: 1, name: '北海道', emoji: '🦀' }, { code: 2, name: '青森県', emoji: '🍎' }, { code: 3, name: '岩手県', emoji: '🍜' },
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { code: 37, name: '香川県', emoji: '' }, { code: 38, name: '愛媛県', emoji: '🍊' }, { code: 39, name: '高知県', emoji: '' },
         { code: 40, name: '福岡県', emoji: '🍓' }, { code: 41, name: '佐賀県', emoji: '🦑' }, { code: 42, name: '長崎県', emoji: '🔔' },
         { code: 43, name: '熊本県', emoji: '🐻' }, { code: 44, name: '大分県', emoji: '♨️' }, { code: 45, name: '宮崎県', emoji: '🥭' },
-        { code: 46, name: '鹿児島県', emoji: '🌋' }, { code: 47, name: '沖縄県', emoji: '🌺' }
+        { code: 46, name: '鹿児島県', emoji: '🌋' }, { code: 47, name: '沖縄県', emoji: '' }
     ];
 
     // --- Main Initialization ---
@@ -35,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(svgData => {
             document.getElementById('map-container').innerHTML = svgData;
             initializeDOMElements();
+            initializeSound();
             initializeMap();
             startGame();
         });
@@ -48,6 +50,23 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackSymbol = document.getElementById('feedback-symbol');
         feedbackText = document.getElementById('feedback-text');
         questionMascot = document.getElementById('question-mascot');
+        muteButton = document.getElementById('mute-button');
+    }
+
+    function initializeSound() {
+        // Load mute setting from previous session
+        isMuted = localStorage.getItem('prefectureQuizMuted') === 'true';
+        updateMuteButton();
+
+        muteButton.addEventListener('click', () => {
+            isMuted = !isMuted;
+            localStorage.setItem('prefectureQuizMuted', isMuted);
+            updateMuteButton();
+        });
+    }
+
+    function updateMuteButton() {
+        muteButton.textContent = isMuted ? '🔇' : '🔊';
     }
 
     function initializeMap() {
@@ -115,32 +134,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function playSound(type) {
+        if (isMuted) return; // Check if sound is muted
         if (!audioCtx) {
             try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
             catch (e) { console.error("Web Audio API is not supported"); return; }
         }
+
+        if (type === 'correct') {
+            const osc1 = audioCtx.createOscillator();
+            const gain1 = audioCtx.createGain();
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(783.99, audioCtx.currentTime);
+            gain1.gain.setValueAtTime(0.4, audioCtx.currentTime);
+            gain1.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.2);
+            osc1.connect(gain1);
+            gain1.connect(audioCtx.destination);
+            osc1.start(audioCtx.currentTime);
+            osc1.stop(audioCtx.currentTime + 0.2);
+
+            const osc2 = audioCtx.createOscillator();
+            const gain2 = audioCtx.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(523.25, audioCtx.currentTime + 0.1);
+            gain2.gain.setValueAtTime(0.4, audioCtx.currentTime + 0.1);
+            gain2.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.3);
+            osc2.connect(gain2);
+            gain2.connect(audioCtx.destination);
+            osc2.start(audioCtx.currentTime + 0.1);
+            osc2.stop(audioCtx.currentTime + 0.3);
+            return;
+        }
+
         const oscillator = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
         oscillator.connect(gainNode);
         gainNode.connect(audioCtx.destination);
-        if (type === 'correct') {
-            oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-            gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-            setTimeout(() => gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.5), 100);
-        } else if (type === 'incorrect') {
-            oscillator.type = 'square';
-            oscillator.frequency.setValueAtTime(261.63, audioCtx.currentTime);
-            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            setTimeout(() => gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.3), 100);
-        }
+        oscillator.type = 'square';
+        oscillator.frequency.setValueAtTime(261.63, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        setTimeout(() => gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.3), 100);
         oscillator.start(audioCtx.currentTime);
         oscillator.stop(audioCtx.currentTime + 0.5);
     }
 
     function showFeedback(isCorrect) {
         if (isCorrect) {
-            // Use prefecture emoji if it exists, otherwise default to a circle
             feedbackSymbol.textContent = currentPrefecture.emoji || '⚪︎';
             feedbackText.textContent = '正解！';
             feedbackOverlay.className = 'correct';
