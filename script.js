@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clickedGroup.classList.add('correct-answer');
             showFeedback(true);
             updateMascot('correct');
-            setTimeout(askQuestion, 1500);
+            setTimeout(askQuestion, 800);
         } else {
             playSound('incorrect');
             updateMascot('incorrect');
