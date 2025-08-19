@@ -142,11 +142,18 @@ g.prefectures > g:hover {
 
 .feedback-content {
     background-color: white;
-    padding: 40px 60px;
-    border-radius: 20px;
+    width: 280px; /* Set a fixed width */
+    height: 280px; /* Set an equal fixed height */
+    border-radius: 50%; /* Make it a circle */
     text-align: center;
     transform: scale(1);
     transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Add some padding */
+    box-sizing: border-box; /* Ensure padding doesn't break the circle */
 }
 
 #feedback-overlay.hidden .feedback-content {
@@ -185,4 +192,26 @@ g.prefectures > g:hover {
 
 #restart-button:hover {
     background-color: #023e8a;
+}
+
+/* Sound Control */
+#sound-control-wrapper {
+    margin-top: 20px;
+}
+
+#mute-button {
+    background: none;
+    border: 2px solid #ced4da;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #495057;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+#mute-button:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
 }
