@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     // --- Main Initialization ---
-    fetch('assets/japan.svg')
+    fetch('japan.svg')
         .then(response => response.text())
         .then(svgData => {
             document.getElementById('map-container').innerHTML = svgData;
