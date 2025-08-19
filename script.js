@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { code: 37, name: '香川県', emoji: '' }, { code: 38, name: '愛媛県', emoji: '🍊' }, { code: 39, name: '高知県', emoji: '' },
         { code: 40, name: '福岡県', emoji: '🍓' }, { code: 41, name: '佐賀県', emoji: '🦑' }, { code: 42, name: '長崎県', emoji: '🔔' },
         { code: 43, name: '熊本県', emoji: '🐻' }, { code: 44, name: '大分県', emoji: '♨️' }, { code: 45, name: '宮崎県', emoji: '🥭' },
-        { code: 46, name: '鹿児島県', emoji: '🌋' }, { code: 47, name: '沖縄県', emoji: '' }
+        { code: 46, name: '鹿児島県', emoji: '🌋' }, { code: 47, name: '沖縄県', emoji: '🌺' }
     ];
 
     // --- Main Initialization ---
