@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>都道府県あてクイズ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-layout">
+        <div id="map-container">
+            <!-- SVG map will be loaded here -->
+        </div>
+        <div id="controls-container">
+            <h1>都道府県あてクイズ</h1>
+            <div id="quiz-container">
+                <div id="question-wrapper">
+                    <span id="question-mascot">🐻</span>
+                    <h2 id="question"></h2>
+                </div>
+                <p id="result"></p>
+            </div>
+            <div id="score-container">
+                <p>正解数: <span id="score">0</span> / 47</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- Overlays -->
+    <div id="feedback-overlay" class="hidden">
+        <div class="feedback-content">
+            <span id="feedback-symbol"></span>
+            <span id="feedback-text"></span>
+        </div>
+    </div>
+</body>
+</html>
