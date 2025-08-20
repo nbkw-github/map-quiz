@@ -48,7 +48,7 @@ h1 {
 }
 
 #question {
-    font-size: calc(0.6rem + 0.8vw);
+    font-size: calc(1rem + 0.5vw);
     color: #005f73;
     margin: 0; /* Remove default margin */
 }
@@ -58,8 +58,6 @@ h1 {
     justify-content: center;
     align-items: center;
     gap: 15px;
-    margin: 15px 0;
-    min-height: 1.5em;
 }
 
 #question-mascot {
@@ -67,14 +65,17 @@ h1 {
 }
 
 #result {
-    font-size: calc(1rem + 0.7vw);
-    min-height: 1.5em;
+    font-size: calc(0.6rem + 0.8vw);
+    min-height: 1.6em;
     font-weight: bold;
+	margin: 0;
 }
 
 #score-container {
-    font-size: calc(1rem + 0.5vw);
-    margin-top: 15px;
+    font-size: calc(0.6rem + 0.8vw);
+}
+#score-container p{
+	margin: .5em 0;
 }
 
 /* Wide Screen Layout (Tablet & Desktop) */
@@ -195,9 +196,6 @@ g.prefectures > g:hover {
 }
 
 /* Sound Control */
-#sound-control-wrapper {
-    margin-top: 20px;
-}
 
 #mute-button {
     background: none;
